@@ -125,10 +125,68 @@ export default function Home() {
       }
 
       try {
-        const canvas = await html2canvas(paletteElement, {
+        // Clone the element to avoid modifying the original
+        const clone = paletteElement.cloneNode(true) as HTMLElement;
+        clone.style.position = 'absolute';
+        clone.style.left = '-9999px';
+        clone.style.top = '0';
+        clone.style.width = paletteElement.offsetWidth + 'px';
+        document.body.appendChild(clone);
+
+        // Remove problematic Tailwind classes and replace with inline styles
+        const removeProblematicClasses = (element: HTMLElement) => {
+          // Get computed styles before removing classes
+          const computedStyle = window.getComputedStyle(element);
+
+          // Remove all Tailwind utility classes that might use oklab
+          const classList = element.classList;
+          const classesToRemove: string[] = [];
+
+          classList.forEach((className) => {
+            // Remove classes that might use color functions
+            if (className.includes('shadow') ||
+              className.includes('ring') ||
+              className.includes('border') ||
+              className.includes('bg-') ||
+              className.includes('text-')) {
+              classesToRemove.push(className);
+            }
+          });
+
+          classesToRemove.forEach(c => classList.remove(c));
+
+          // Apply essential inline styles
+          element.style.backgroundColor = computedStyle.backgroundColor;
+          element.style.color = computedStyle.color;
+          element.style.padding = computedStyle.padding;
+          element.style.margin = computedStyle.margin;
+          element.style.borderRadius = computedStyle.borderRadius;
+
+          // Remove SVG elements as they cause LAB color issues
+          const svgs = element.querySelectorAll('svg');
+          svgs.forEach(svg => svg.remove());
+
+          // Recursively process children
+          Array.from(element.children).forEach(child => {
+            if (child instanceof HTMLElement) {
+              removeProblematicClasses(child);
+            }
+          });
+        };
+
+        removeProblematicClasses(clone);
+
+        // Use html2canvas on the cleaned clone
+        const canvas = await html2canvas(clone, {
           backgroundColor: '#0a0a0a',
           scale: 2,
+          logging: false,
+          useCORS: true,
+          allowTaint: true,
         });
+
+        // Remove clone
+        document.body.removeChild(clone);
 
         canvas.toBlob((blob) => {
           if (!blob) {
@@ -145,7 +203,7 @@ export default function Home() {
         }, 'image/png');
       } catch (error) {
         console.error('Failed to export PNG:', error);
-        alert('Failed to export PNG. Please try again.');
+        alert('Failed to export PNG. Try exporting as JSON, CSS, or Tailwind instead.');
       }
     } else {
       const content = exportPalette(palette, format);

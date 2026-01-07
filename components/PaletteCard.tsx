@@ -16,8 +16,9 @@ export default function PaletteCard({ palette, isBest, onExport }: PaletteCardPr
         <div
             className={`
         card animate-fade-in
-        ${isBest ? 'ring-2 ring-yellow-500 shadow-xl shadow-yellow-500/20' : ''}
+        ${isBest ? 'ring-2 ring-yellow-500' : ''}
       `}
+            style={isBest ? { boxShadow: '0 20px 25px -5px rgba(234, 179, 8, 0.2)' } : {}}
         >
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
