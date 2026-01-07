@@ -19,36 +19,35 @@ export default function PalettePreview({ palette }: PalettePreviewProps) {
 
     return (
         <div
-            className="rounded-lg p-6 space-y-4 transition-all duration-300"
+            className="rounded-lg p-3 space-y-2 transition-all duration-300"
             style={{ backgroundColor: bg, color: bgText }}
         >
             {/* Headline */}
-            <h2 className="text-2xl font-bold" style={{ color: bgText }}>
+            <h2 className="text-sm font-bold" style={{ color: bgText }}>
                 Sample Headline
             </h2>
 
             {/* Body Text */}
-            <p className="text-sm opacity-80" style={{ color: bgText }}>
-                This is how your body text will look with this color palette.
-                The contrast is automatically checked for readability.
+            <p className="text-xs opacity-80" style={{ color: bgText }}>
+                Body text preview with this palette.
             </p>
 
             {/* Buttons */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
                 <button
-                    className="px-4 py-2 rounded-lg font-semibold transition-transform hover:scale-105"
+                    className="px-3 py-1 rounded text-xs font-semibold transition-transform hover:scale-105"
                     style={{ backgroundColor: primary, color: primaryText }}
                 >
-                    Primary Button
+                    Primary
                 </button>
                 <button
-                    className="px-4 py-2 rounded-lg font-semibold transition-transform hover:scale-105"
+                    className="px-3 py-1 rounded text-xs font-semibold transition-transform hover:scale-105"
                     style={{ backgroundColor: secondary, color: secondaryText }}
                 >
                     Secondary
                 </button>
                 <button
-                    className="px-4 py-2 rounded-lg font-semibold border-2 transition-transform hover:scale-105"
+                    className="px-3 py-1 rounded text-xs font-semibold border transition-transform hover:scale-105"
                     style={{
                         borderColor: accent,
                         color: accent,
@@ -57,21 +56,6 @@ export default function PalettePreview({ palette }: PalettePreviewProps) {
                 >
                     Outline
                 </button>
-            </div>
-
-            {/* Card */}
-            <div
-                className="p-4 rounded-lg"
-                style={{
-                    backgroundColor: primaryText === '#ffffff' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-                }}
-            >
-                <h3 className="font-semibold mb-2" style={{ color: bgText }}>
-                    Card Component
-                </h3>
-                <p className="text-sm opacity-70" style={{ color: bgText }}>
-                    This demonstrates how cards and containers will appear.
-                </p>
             </div>
         </div>
     );
